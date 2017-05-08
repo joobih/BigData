@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 # coding=utf-8
 
+import sys
+if sys.version < '3':
+    import httplib
+    httplib.HTTPConnection.debuglevel = 1
+else:
+    import http.client
+    http.client.HTTPConnection.debuglevel = 1
 import requests
-import httplib
 import uuid
-httplib.HTTPConnection.debuglevel = 1
 
 def get_SUB():
     uid = uuid.uuid1()
