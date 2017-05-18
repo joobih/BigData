@@ -5,7 +5,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 #解析网易新闻网页
-class WangYiParser():
+class WangYiParser(object):
     def __init__(self):
         pass
 
@@ -25,23 +25,23 @@ class WangYiParser():
             "parser_time":"2017-01-11 20:57:00"                           #解析时间
         }
     """
-    def news_page_parser(self,html):
-        bs = BeautifulSoup(html,"html.parser")
-        div = bs.find_all("div",id = "epContentLeft")[0]
+    def news_page_parser(self, html):
+        bs = BeautifulSoup(html, "html.parser")
+        div = bs.find_all("div", id="epContentLeft")[0]
 
         #清楚div中的style,script标签和不需要的广告div 标签等
         style_div = div.find_all("style")
-        for s in style_div:
-            s.decompose()
+        for items in style_div:
+            items.decompose()
         script_div = div.find_all("script")
-        for s in script_div:
-            s.decompose()
-        div_b = div.find_all("div",id = "js_qrcode_btm")
+        for items in script_div:
+            items.decompose()
+        div_b = div.find_all("div", id="js_qrcode_btm")
         if div_b:
             div_b[0].decompose()
-        caijing_bq_div = div.find_all("div",attrs = {"class":"caijing_bq"})[0]
+        caijing_bq_div = div.find_all("div", attrs={"class":"caijing_bq"})[0]
         caijing_bq_div.decompose()
-        other_div = div.find_all("div",attrs = {"class":"gg200x300"})[0]
+        other_div = div.find_all("div", attrs={"class":"gg200x300"})[0]
         other_div.decompose()
         result = {}
         #获取新闻标题
@@ -50,12 +50,12 @@ class WangYiParser():
         result["title"] = title
 
         #获取新闻来源
-        time_div = div.find_all("div",attrs = {"class":"post_time_source"})[0]
-        from_div = time_div.find_all("a",id = "ne_article_source")
+        time_div = div.find_all("div", attrs={"class":"post_time_source"})[0]
+        from_div = time_div.find_all("a", id="ne_article_source")
         from_text = from_div[0].text
         result["from"] = from_text
-        for f in from_div:
-            f.decompose()
+        for items in from_div:
+            items.decompose()
         print time_div,"time_div"
 
         #获取新闻发表时间
@@ -77,7 +77,7 @@ class WangYiParser():
         #获取新闻中的图片地址
         pic_div = div.find_all("img")
         pic_dict = {}
-        for i,p in enumerate(pic_div):
+        for i, p in enumerate(pic_div):
             src = p.attrs["src"]
             pic_dict[str(i)] = src
         result["pictures"] = pic_dict
